@@ -67,7 +67,7 @@ When a server receives one POST, the server would publish two indentical message
 **Consumers**:
 There are two multi-thread consumer services and each of them runs on a t2.micro EC2 instance. They are both connected to RabbitMQ and Redis. One conumser is connected to "skier\_service\_queue" and is responsible for writing Skier Microservice data to Redis. The other consumer is connected to  "resort\_service\_queue" and is responsible for writing Resort Microservice data to Redis.  
 **Redis**:
-I use one t2.small EC2 instance to run Redis. It stores and persists the data needed for two mirroservices.  
+I use two t2.micro EC2 instances to run Redis. They store and persist the data needed for two microservices respectively.  
 
 ### Screenshots and Mitigation Comparsion ###
 **Screenshots**  
