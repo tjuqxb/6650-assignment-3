@@ -44,16 +44,16 @@ public class SingleConsumerThread implements Runnable{
             Integer time = ride.getTime();
             try (Jedis jedis = jedisPool.getResource()) {
                 if (type.equals("skier_service")) {
-                    jedis.sadd("u" + userId + "s" + seasonId + "days", "" + daysId);
-                    jedis.sadd("u" + userId + "s" + seasonId + "d" + daysId + "lifts", "" + liftId);
-                    String verticalKey = "u" + userId + "s" + seasonId + "d" + daysId + "vertical";
+                    jedis.sadd("01" + "u" + userId + "s" + seasonId + "days", "" + daysId);
+                    jedis.sadd("01" + "u" + userId + "s" + seasonId + "d" + daysId + "lifts", "" + liftId);
+                    String verticalKey = "01" + "u" + userId + "s" + seasonId + "d" + daysId + "vertical";
                     Integer vertical = 10 * liftId;
                     jedis.incrBy(verticalKey, (long)vertical);
                 } else if (type.equals("resort_service")) {
-                    jedis.sadd("re" + resortId + "s" + seasonId + "d" + daysId + "users", "" + userId);
-                    jedis.incr("li" + liftId + "s" + seasonId + "d" + daysId + "freq");
+                    jedis.sadd("02" + "re" + resortId + "s" + seasonId + "d" + daysId + "users", "" + userId);
+                    jedis.incr("02" + "li" + liftId + "s" + seasonId + "d" + daysId + "freq");
                     Integer hour = (time - 1) / 60;
-                    jedis.incr("s" + seasonId + "d" + daysId + "h" + hour + "freq");
+                    jedis.incr("02" + "s" + seasonId + "d" + daysId + "h" + hour + "freq");
                 }
             }
             //System.out.println(key + ": " + post.getLiftID() + " " + post.getTime() + " " + post.getWaitTime());
