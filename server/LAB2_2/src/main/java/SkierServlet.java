@@ -34,7 +34,7 @@ public class SkierServlet extends HttpServlet {
     private final static String QUEUE_NAME_1 = "skier_service_queue";
     private final static String QUEUE_NAME_2 = "resort_service_queue";
     private BlockingQueue<Channel> channelPool = new ArrayBlockingQueue<Channel>(200);
-    private EventCountCircuitBreaker breaker = new EventCountCircuitBreaker(2000, 2, TimeUnit.SECONDS, 1600);
+    private EventCountCircuitBreaker breaker = new EventCountCircuitBreaker(2500, 2, TimeUnit.SECONDS, 2000);
     private AtomicInteger exp = new AtomicInteger(1);
 
 

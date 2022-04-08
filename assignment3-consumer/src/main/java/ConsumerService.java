@@ -17,7 +17,7 @@ public class ConsumerService {
     private static String TYPE;
     private static String QUEUE_NAME;
     private final static String IP_MQ = "172.31.27.239";
-    private final static String IP_REDIS = "172.31.24.177";
+    private static String IP_REDIS = "172.31.24.177";
     //private static ConcurrentMap<Integer, Vector<LiftRide>> skierRecordMap = new ConcurrentHashMap<>();
 
 
@@ -27,11 +27,12 @@ public class ConsumerService {
      * @param args user specified arguments.
      *              - arg0: number of threads to run (numThreads >= 1)
      *              - arg1: choose one type "skier_service" or "resort_service"
-     *              For example: java -jar assignment2-consumer.jar 128 skier_service
+     *              - arg2: the redis IP address
+     *              For example: java -jar assignment2-consumer.jar 128 skier_service 172.31.26.25
      */
     public static void main(String[] args) throws JAXBException, IOException, TimeoutException {
         Integer[] argsRecNum = new Integer[1];
-        String[] argsRecStr = new String[1];
+        String[] argsRecStr = new String[2];
         if (args.length == 0) {
             JAXBContext jc = JAXBContext.newInstance(Parameters.class);
             Unmarshaller unmarshaller = jc.createUnmarshaller();
@@ -47,9 +48,11 @@ public class ConsumerService {
             Parameters root = (Parameters) unmarshaller.unmarshal(xml);
             argsRecNum[0] = root.numThreads;
             argsRecStr[0] = root.service;
-        } else if (args.length == 2){
+            argsRecStr[1] = root.RedisIP;
+        } else if (args.length == 3){
             argsRecNum[0] = Utils.parseSingleNumber(args[0]);
             argsRecStr[0] = args[1];
+            argsRecStr[1] = args[2];
         } else {
             System.err.println("wrong number of arguments");
         }
@@ -57,10 +60,11 @@ public class ConsumerService {
             System.err.println("wrong arguments");
             return;
         }
-        JedisPool pool = new JedisPool(IP_REDIS, 6379);
         numThreads = argsRecNum[0];
         TYPE = argsRecStr[0];
+        IP_REDIS= argsRecStr[1];
         QUEUE_NAME = TYPE + "_queue";
+        JedisPool pool = new JedisPool(IP_REDIS, 6379);
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost(IP_MQ);
         Connection conn = factory.newConnection();

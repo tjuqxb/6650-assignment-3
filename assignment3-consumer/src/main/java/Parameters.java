@@ -13,4 +13,5 @@ public class Parameters {
     @XmlElement
     Integer numThreads;
     String  service;
+    String  RedisIP;
 }
